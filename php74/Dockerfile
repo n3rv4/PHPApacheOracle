@@ -13,7 +13,7 @@ RUN mkdir /opt/oracle \
 
 # Install Oracle extensions
 RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_19_14,19.14 \
-       && echo 'instantclient,/opt/oracle/instantclient_19_14/' | pecl install oci8 \
+       && echo 'instantclient,/opt/oracle/instantclient_19_14/' | pecl install oci8-2.2.0 \
        && docker-php-ext-install \
                pdo_oci \
        && docker-php-ext-enable \
@@ -39,10 +39,6 @@ COPY _php/timezone.ini /usr/local/etc/php/conf.d/timezone.ini
 COPY _php/vars.ini /usr/local/etc/php/conf.d/vars.ini
 
 RUN cp -f "/usr/local/etc/php/php.ini-production" /usr/local/etc/php/php.ini
-
-RUN touch /app/.env
-RUN touch /etc/apache2/sites-available/000-default.conf
-RUN touch /app/oracle_credentials/tnsnames.ora
 
 WORKDIR /app
 

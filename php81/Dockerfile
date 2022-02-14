@@ -40,10 +40,6 @@ COPY _php/vars.ini /usr/local/etc/php/conf.d/vars.ini
 
 RUN cp -f "/usr/local/etc/php/php.ini-production" /usr/local/etc/php/php.ini
 
-RUN touch /app/.env
-RUN touch /etc/apache2/sites-available/000-default.conf
-RUN touch /app/oracle_credentials/tnsnames.ora
-
 WORKDIR /app
 
 ENV TNS_ADMIN="/app/oracle_credentials/"
