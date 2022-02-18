@@ -14,8 +14,9 @@ RUN mkdir /opt/oracle \
 # Install Oracle extensions
 RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_19_14,19.14 \
        && echo 'instantclient,/opt/oracle/instantclient_19_14/' | pecl install oci8-2.2.0 \
-       && docker-php-ext-install \
-               pdo_oci \
+       && docker-php-ext-install pdo_oci \
+       && docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient \
+       && docker-php-ext-install oci8 \
        && docker-php-ext-enable \
                oci8
 
