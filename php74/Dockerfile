@@ -11,14 +11,11 @@ RUN mkdir /opt/oracle \
     && unzip /opt/oracle/instantclient-sdk-linux.x64-19.14.0.0.0dbru.zip -d /opt/oracle \
     && rm -rf /opt/oracle/*.zip
 
-# Install Oracle extensions
-RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_19_14,19.14 \
-       && echo 'instantclient,/opt/oracle/instantclient_19_14/' | pecl install oci8-2.2.0 \
-       && docker-php-ext-install pdo_oci \
-       && docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient \
-       && docker-php-ext-install oci8 \
-       && docker-php-ext-enable \
-               oci8
+
+RUN echo 'instantclient,/opt/oracle/instantclient_19_14/' | pecl install oci8-2.2.0
+RUN docker-php-ext-enable oci8 \
+           && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_19_14,19.14 \
+           && docker-php-ext-install pdo_oci
 
 RUN docker-php-ext-install pdo_mysql exif opcache \
   && docker-php-ext-install intl soap dom \
