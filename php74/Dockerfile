@@ -3,16 +3,21 @@ FROM php:7.4-apache
 RUN apt-get update && apt-get -y install libicu-dev libaio-dev libxml2-dev libjpeg-dev libpng-dev libfreetype6-dev libldap2-dev libzip-dev imagemagick vim wget telnet cron sudo git npm unzip
 
 # Install Oracle Instantclient
+# Install Oracle Instantclient
 RUN mkdir /opt/oracle \
     && cd /opt/oracle \
     && wget https://download.oracle.com/otn_software/linux/instantclient/1914000/instantclient-basic-linux.x64-19.14.0.0.0dbru.zip \
     && wget https://download.oracle.com/otn_software/linux/instantclient/1914000/instantclient-sdk-linux.x64-19.14.0.0.0dbru.zip \
+    && wget https://download.oracle.com/otn_software/linux/instantclient/1914000/instantclient-sqlplus-linux.x64-19.14.0.0.0dbru.zip \
     && unzip /opt/oracle/instantclient-basic-linux.x64-19.14.0.0.0dbru.zip -d /opt/oracle \
     && unzip /opt/oracle/instantclient-sdk-linux.x64-19.14.0.0.0dbru.zip -d /opt/oracle \
+    && unzip /opt/oracle/instantclient-sqlplus-linux.x64-19.14.0.0.0dbru.zip -d /opt/oracle \
     && rm -rf /opt/oracle/*.zip \
     && ln -s /opt/oracle/instantclient_19_14 /usr/local/instantclient \
     && ln -s /usr/local/instantclient/lib* /usr/lib \
-    && ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+    && ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus \
+    && export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_14:$LD_LIBRARY_PATH \
+    && export PATH=$LD_LIBRARY_PATH:$PATH
 
 
 # Install Oracle extensions
